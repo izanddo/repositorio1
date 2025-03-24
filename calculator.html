@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Científica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e0f2ff;
+        }
+        .calculator {
+            width: 280px;
+            background: #0044cc;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        .screen {
+            width: calc(100% - 20px);
+            height: 50px;
+            font-size: 1.5em;
+            text-align: right;
+            padding: 10px;
+            border: none;
+            background: #cce5ff;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+        button {
+            padding: 15px;
+            font-size: 1em;
+            border: none;
+            cursor: pointer;
+            background: #3385ff;
+            color: white;
+            border-radius: 5px;
+        }
+        .power-btn {
+            width: 35px;
+            height: 35px;
+            background: red;
+            border-radius: 50%;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .disabled {
+            background: #555 !important;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator" id="calculator">
+        <h2>Calculadora de Izan</h2>
+        <button class="power-btn" onclick="toggleCalculator()">On/Off</button>
+        <input type="text" class="screen" id="screen" disabled>
+        <div class="buttons" id="buttons">
+            <button onclick="clearScreen()">C</button>
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue(')')">)</button>
+            <button onclick="appendValue('/')">/</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('*')">*</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('-')">-</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('+')">+</button>
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="calculateFunction('sin')">sin</button>
+            <button onclick="calculateFunction('cos')">cos</button>
+            <button onclick="calculateFunction('tan')">tan</button>
+            <button onclick="calculateFunction('log')">log</button>
+            <button onclick="calculateFunction('sqrt')">√</button>
+            <button onclick="calculateFunction('exp')">e^x</button>
+            <button onclick="appendValue('^')">^</button>
+        </div>
+    </div>
+    <script>
+        let isOn = true;
+        function toggleCalculator() {
+            let screen = document.getElementById("screen");
+            let buttons = document.getElementById("buttons").getElementsByTagName("button");
+            isOn = !isOn;
+            screen.value = "";
+            screen.disabled = !isOn;
+            for (let button of buttons) {
+                button.disabled = !isOn;
+                button.classList.toggle("disabled", !isOn);
+            }
+        }
+        function appendValue(value) {
+            document.getElementById("screen").value += value;
+        }
+        function clearScreen() {
+            document.getElementById("screen").value = "";
+        }
+        function calculate() {
+            try {
+                document.getElementById("screen").value = eval(document.getElementById("screen").value.replace('^', '**'));
+            } catch {
+                document.getElementById("screen").value = "Error";
+            }
+        }
+        function calculateFunction(func) {
+            let value = document.getElementById("screen").value;
+            if (value !== "") {
+                switch (func) {
+                    case 'sin':
+                        document.getElementById("screen").value = Math.sin(value);
+                        break;
+                    case 'cos':
+                        document.getElementById("screen").value = Math.cos(value);
+                        break;
+                    case 'tan':
+                        document.getElementById("screen").value = Math.tan(value);
+                        break;
+                    case 'log':
+                        document.getElementById("screen").value = Math.log10(value);
+                        break;
+                    case 'sqrt':
+                        document.getElementById("screen").value = Math.sqrt(value);
+                        break;
+                    case 'exp':
+                        document.getElementById("screen").value = Math.exp(value);
+                        break;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
